@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>testbed_navigation</name>
+  <version>1.0.0</version>
+  <description>ROS 2 Navigation package for Testbed-T1.0.0 robot using modular Nav2 plugins</description>
+  <maintainer email="rohit.panikar@ericrobotics.com">Ayushman</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>nav2_map_server</depend>
+  <depend>nav2_amcl</depend>
+  <depend>nav2_lifecycle_manager</depend>
+  <depend>nav2_controller</depend>
+  <depend>nav2_planner</depend>
+  <depend>nav2_behaviors</depend>
+  <depend>nav2_bt_navigator</depend>
+  <depend>nav2_waypoint_follower</depend>
+  <depend>nav2_costmap_2d</depend>
+  <depend>nav2_rviz_plugins</depend>
+  <depend>rviz2</depend>
+  <depend>testbed_bringup</depend>
+  <depend>testbed_description</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

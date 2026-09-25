@@ -1,4 +1,4 @@
-# Level 1: ROS2 Navigation Assignment - Your Full Name
+# Level 1: ROS2 Navigation Assignment - Ayushman Behera
 
 ## Overview
 At ERIC Robotics, we’re big believers in building software with modularity. The nav2 stack reflects this perfectly with flexible, plugin-based framework, allowing you to pick and choose which pieces you need and run them independently. In this assignment, you’ll walk through the navigation workflow step by step—manually creating and calling actions—to bring an autonomous robot to life.
@@ -22,8 +22,8 @@ ros_nav2_assignment/
 ├── testbed_description/
 │   ├── launch/            # Launch the full base simulation
 │   ├── meshes/
-│   ├── rviz/            # RVIZ configuration files
-│   └── urdf/            # URDF files for Testbed-T1.0.0
+│   ├── rviz/              # RVIZ configuration files
+│   └── urdf/              # URDF files for Testbed-T1.0.0
 ├── testbed_gazebo/
 │   ├── worlds/            # Simulation world files
 │   ├── launch/            # Launch files for Gazebo
@@ -31,6 +31,11 @@ ros_nav2_assignment/
 ├── testbed_bringup/
 │   ├── launch/            # Launch file for bringing up the robot
 │   └── maps/              # Predefined map of the test environment
+├── testbed_navigation/
+│   ├── config/            # AMCL and Nav2 parameter files
+│   ├── launch/            # Modular launch files (map_loader, localization, navigation)
+│   ├── rviz/              # Pre-configured RViz display for Nav2
+│   └── README.md          # Implementation details and guide
 ├── help.md                # Guidelines and FAQs
 └── README.md              # Instructions for the assignment
 ```
@@ -89,6 +94,17 @@ To get started, you’ll need:
 2. Write actions in the launch file `testbed_navigation/launch/map_loader.launch.py` to load the map using the `map_server` plugin.
 3. Test and confirm that the map is loaded correctly in Rviz.
 
+
+>
+> The original starter code in [`testbed_bringup/maps/testbed_world.yaml`](testbed_bringup/maps/testbed_world.yaml) had an incorrect `image` field:
+> ```yaml
+> image: wrong_path_testbed_world.pgm
+> ```
+> This caused `map_server` to fail because the `.pgm` file could not be found. The fix is to use the correct filename that matches the actual map image:
+> ```yaml
+> image: testbed_world.pgm
+> ```
+
 ### 5. Localization
 1. Implement localization with the AMCL plugin:
    - Write a parameter file for AMCL in `testbed_navigation/config/amcl_params.yaml`.
@@ -125,6 +141,6 @@ We’ll be looking for:
 We’re excited to see how you approach this task. Good luck, and happy coding! :)
 
 ## Contact Info 
- - Name: Your full name
- - Contact number: Your contact number
- - Email Address: Your email address
+ - Name: Ayushman Behera
+ - Contact number: +91 9438007482
+ - Email Address: ayushmanaka@gmail.com

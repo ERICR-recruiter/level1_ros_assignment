@@ -6,6 +6,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 from ament_index_python.packages import get_package_prefix
 from launch.actions import ExecuteProcess
 
@@ -41,12 +42,13 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(pkg_gazebo_ros, 'launch', 'gazebo.launch.py'),
         ),
+        launch_arguments={'world': LaunchConfiguration('world')}.items()
     )    
 
     return LaunchDescription([
         DeclareLaunchArgument(
           'world',
-          default_value=[os.path.join(pkg_testbed_gazebo, 'worlds', 'testbed_playground.world'), ''],
+          default_value=os.path.join(pkg_testbed_gazebo, 'worlds', 'testbed_playground.world'),
           description='SDF world file'),
         gazebo,
     ])

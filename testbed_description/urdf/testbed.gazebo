@@ -3,9 +3,12 @@
 
 <xacro:property name="body_color" value="Gazebo/Silver" />
 
+<!-- Removed ROS1 libgazebo_ros_control plugin incompatible with ROS 2 -->
+<!--
 <gazebo>
   <plugin name="control" filename="libgazebo_ros_control.so"/>
 </gazebo>
+-->
 
   <gazebo>
     <plugin name="diff_drive_control" filename="libgazebo_ros_diff_drive.so">
@@ -37,7 +40,7 @@
       <update_rate>10</update_rate>
       <visualize>true</visualize>
       <plugin name="my_imu_plugin" filename="libgazebo_ros_imu_sensor.so">
-      <initial_orientation_as_reference>false</initial_orientation_as_reference>>
+      <initial_orientation_as_reference>false</initial_orientation_as_reference>
         <ros>
           <remapping>~/out:=imu</remapping>
         </ros>
@@ -54,7 +57,7 @@
       <ray>
         <scan>
           <horizontal>
-            <samples>300</samples>
+            <samples>360</samples>
             <resolution>1</resolution>
             <min_angle>-3.14</min_angle>
             <max_angle>3.14</max_angle>
@@ -62,7 +65,7 @@
         </scan>
         <range>
           <min>0.10</min>
-          <max>1.5</max>
+          <max>12.0</max>
           <resolution>0.01</resolution>
         </range>
         <noise>
@@ -73,14 +76,11 @@
       </ray>
       <plugin name="my_ray_sensor_plugin" filename="libgazebo_ros_ray_sensor.so">
         <ros>
-          <!-- Configure namespace and remap to publish to /ray/pointcloud2 -->
+          <!-- Configure namespace and remap to publish to /scan -->
           <remapping>~/out:=scan</remapping>
         </ros>
-        <!-- Output as a PointCloud2, see above for other types -->
+        <!-- Output as a LaserScan -->
         <output_type>sensor_msgs/LaserScan</output_type>
-        <!-- Clip intensity values so all are above 100, optional -->
-        <min_intensity>100.0</min_intensity>
-        <!-- Frame id for header of output, defaults to sensor's parent link name -->
         <frame_name>lidar_link_1</frame_name>
       </plugin>
     </sensor>
@@ -96,29 +96,29 @@
 
 <gazebo reference="caster_1">
   <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
+  <mu1>0.001</mu1>
+  <mu2>0.001</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="caster_2">
   <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
+  <mu1>0.001</mu1>
+  <mu2>0.001</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="caster_3">
   <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
+  <mu1>0.001</mu1>
+  <mu2>0.001</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
 <gazebo reference="caster_4">
   <material>${body_color}</material>
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
+  <mu1>0.001</mu1>
+  <mu2>0.001</mu2>
   <self_collide>true</self_collide>
 </gazebo>
 
