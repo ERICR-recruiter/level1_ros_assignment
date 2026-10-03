@@ -1,21 +1,4 @@
-# Level 1: ROS2 Navigation Assignment - Soham Sarpotdar
-## Repository Structure
-
-```
-testbed_navigation/
-├── launch/
-│ 	├── localization.launch.py
-│ 	├── map_loader.launch.py
-│ 	├── navigation.launch.py
-├── config/
-│   ├── amcl_params.yaml        
-│   ├── nav2_params.yaml           
-├── rviz/
-│ 	├── map_view.rviZ
-│ 	├── nav2_config.rviz
-│ 	├── amcl_config.rviz
-└── README.md
-```
+# Testbed Navigation
 
 ## Troubleshooting
 1. Cmake error during colcon build
