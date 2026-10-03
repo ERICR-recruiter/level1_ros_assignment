@@ -97,6 +97,31 @@ ros_nav2_assignment/
 >    else:
 >        os.environ['GAZEBO_PLUGIN_PATH'] = plugins_to_add
 >    ```
+>
+> 5. Lidar scan range too low \
+>    In `testbed.gazebo`, the range_max set for lidar sensor is 1.5 which is quite low compared to the world.
+>    ```xml
+>    <range>
+>        <min>0.10</min>
+>        <max>1.5</max>
+>        <resolution>0.01</resolution>
+>    </range>
+>    ```
+>
+>    Change the max value to `12.0`
+>
+> 6. Adding Joint states publisher to urdf \
+>    As wheel joints are of type `continuous`, they are not included by robot state publisher directly in tf tree. \
+>    Add the following to `testbed.gazebo` to enable wheel joints TF
+>    ```xml
+>    <gazebo>
+>        <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+>            <update_rate>100</update_rate>
+>            <joint_name>left_wheel_joint</joint_name>
+>            <joint_name>right_wheel_joint</joint_name>
+>        </plugin>
+>    </gazebo>
+>    ``` 
 
 ### 2. Map Loading
 1. Use the map provided in `testbed_bringup/maps/testbed_world.yaml`.
