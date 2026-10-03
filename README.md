@@ -1,5 +1,12 @@
 # Level 1: ROS2 Navigation Assignment - Soham Sarpotdar
 ## Table of Contents
+* [Repository Structure](#repository-structure)
+* [Setup and Simulation](#setup-and-simulation)
+    * [Setting up the repository](#1-setting-up-the-repository)
+    * [Troubleshooting](#troubleshooting)
+    * [Map server launch](#2-map-server-launch)
+    * [AMCL Localization](#3-amcl-localization)
+    * [Navigation](#4-navigation)
 
 ## Repository Structure
 
@@ -7,9 +14,9 @@
 ros_nav2_assignment/
 ├── testbed_description/
 │   ├── launch/            # Launch the full base simulation
-│   ├── meshes/
-│   ├── rviz/            # RVIZ configuration files
-│   └── urdf/            # URDF files for Testbed-T1.0.0
+│   ├── meshes/            # mesh files for models
+│   ├── rviz/              # RVIZ configuration files
+│   └── urdf/              # URDF files for Testbed-T1.0.0
 ├── testbed_gazebo/
 │   ├── worlds/            # Simulation world files
 │   ├── launch/            # Launch files for Gazebo
@@ -25,7 +32,7 @@ ros_nav2_assignment/
 
 ## Setup and Simulation
 
-### 1. Setting Up the Repository
+### 1. Setting up the repository
 1. Create your workspace:
     ```bash
     mkdir -p ~/assignment_ws/src
@@ -123,19 +130,44 @@ ros_nav2_assignment/
 >    </gazebo>
 >    ``` 
 
-### 2. Map Loading
-1. Use the map provided in `testbed_bringup/maps/testbed_world.yaml`.
-2. Write actions in the launch file `testbed_navigation/launch/map_loader.launch.py` to load the map using the `map_server` plugin.
-3. Test and confirm that the map is loaded correctly in Rviz.
+### 2. Map server launch
+* Launch `map_server` node with the `testbed_world.yaml` as a parameter
+* The map server node is a lifecycle node and requires `lifecycle_manager` node to activate or manage its state
+* Launch RViz alongside map server through the same launch file
+* To visualize the map in RViz, a Fixed Frame is required to project the map image on it. A static transform publisher is used to create a transform between the frames `map` and a dummy frame `map_visualization_frame`
+* **ERROR: No [map] received** when Map is added to rviz display.
+    * In RViz, select the Map display, set Topic to /map, and set QoS → Durability Policy to Transient Local. Keep Fixed Frame set to map. 
+    * Save the RViz config as `testbed_navigation/config/map_view.rviz`.
+    * Update the launch file to start RViz with that config.
+
+```bash
+ros2 launch testbed_navigation map_loader.launch.py
+```
+<img width="1200" height="845" alt="map_rviz_viz" src="https://github.com/user-attachments/assets/e359becb-e418-42c1-8fb3-ab6dddaa333b" />
+
 
 ### 3. AMCL Localization
-1. Implement localization with the AMCL plugin:
-   - Write a parameter file for AMCL in `testbed_navigation/config/amcl_params.yaml`.
-   - Create actions in the launch file `testbed_navigation/launch/localization.launch.py` to run AMCL.
-   - Verify that the robot can localize itself in the simulated environment using Rviz.
+* Create `testbed_navigation/config/amcl_params.yaml` and add the required ros parameters.
+* For understanding each parameter, refer official nav2 docs for [amcl](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/others/configuring_amcl/)
+* Set the initial pose to the one set in `spawn_testbed.launch.py`
+* Add the LaunchDescription of `robot_description.launch.py`, `spawn_playground.launch.py` and `spawn_testbed.launch.py`
+* AMCL needs a map to localize, so also add map server and lifecycle_manager nodes
+* Using `DifferentialMotionModel` for robot motion type as our robot is DiffDrive
+
+```bash
+ros2 launch testbed_navigation localization.launch.py
+```
+
 
 ### 4. Navigation
-1. Set up navigation using `nav2` plugins:
-   - Configure parameter files for the global and local planners, behaviour tree plugins and any other nav2 plugin you want to use, like 'collision_monitor' or 'velocity_smoother', in `testbed_navigation/config/nav2_params.yaml`.
-   - Write actions in the launch file `testbed_navigation/launch/navigation.launch.py` to bring up the navigation workflow.
-2. Test the navigation setup by sending goals to the robot and observing its behavior.
+* Create `testbed_navigation/config/nav2_params.yaml` and add parameters for global and local costmaps, waypoint follower, behaviour tree navigator, behaviours, smoother, controllers, planners and collision monitor.
+* Using default plugins for all the servers
+    * Using `SimpleProgressChecker`, `SimpleGoalChecker` and `DWBLocalPlanner` plugins for Controller server
+    * Using `NavfnPlanner` with A* for planner server
+    * Using all 5 default plugins for behaviour server
+* For further customizing  the configuration, refer the official docs for [configuratioin guide](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/)
+* Add all the nodes in the `navigation.launch.py`. Also add map server and amcl nodes for localization.
+
+```bash
+ros2 launch testbed_navigation navigation.launch.py
+```
