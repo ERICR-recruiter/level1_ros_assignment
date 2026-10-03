@@ -21,7 +21,7 @@ def generate_launch_description():
     
     rviz_config = os.path.join(
 		testbed_navigation_dir,
-		'config',
+		'rviz',
 		'amcl_config.rviz',
 	)
 

@@ -32,7 +32,7 @@ def generate_launch_description():
     
     rviz_config = os.path.join(
         testbed_navigation_dir,
-        'config',
+        'rviz',
         'nav2_config.rviz',
     )
     
@@ -148,11 +148,26 @@ def generate_launch_description():
             ),
         ],
     )
+    
+    amcl_lifecycle_manager_cmd = Node(
+        package='nav2_lifecycle_manager',
+        executable='lifecycle_manager',
+        name='lifecycle_manager_amcl',
+        output='screen',
+        parameters=[{
+            'autostart': True,
+            'node_names': [
+            	'map_server', 
+            	'amcl',
+            ],
+            'use_sim_time': True,
+        }],
+    )
 
     nav2_lifecycle_manager_cmd = Node(
         package='nav2_lifecycle_manager',
         executable='lifecycle_manager',
-        name='lifecycle_manager_map',
+        name='lifecycle_manager_nav2',
         output='screen',
         parameters=[{
             'autostart': True,
@@ -186,6 +201,7 @@ def generate_launch_description():
             map_loader_cmd,
             amcl_localization_cmd,
             navigation_cmd,
+            amcl_lifecycle_manager_cmd,
             nav2_lifecycle_manager_cmd,
             rviz_cmd,
         ]
